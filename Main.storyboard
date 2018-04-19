@@ -28,10 +28,15 @@
                                     <segment title="IN PROGRESS"/>
                                     <segment title="DONE"/>
                                 </segments>
+                                <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <connections>
+                                    <action selector="onClickSegmtd:" destination="BYZ-38-t0r" eventType="valueChanged" id="rPF-A4-ec7"/>
+                                </connections>
                             </segmentedControl>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="YGO-sT-MAk">
                                 <rect key="frame" x="0.0" y="114" width="375" height="499"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="tintColor" red="1" green="0.1857388616" blue="0.57339501380000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="todoCell" textLabel="aUL-ZZ-Q3Q" style="IBUITableViewCellStyleDefault" id="lFD-S9-n3E">
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
@@ -106,7 +111,8 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
-                        <outlet property="tableview" destination="YGO-sT-MAk" id="Yi4-L7-sMJ"/>
+                        <outlet property="segmtd" destination="Zoa-O2-8qv" id="G8x-IG-6lu"/>
+                        <outlet property="tableview" destination="YGO-sT-MAk" id="X6c-DR-Db2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
