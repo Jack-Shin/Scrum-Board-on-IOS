@@ -38,7 +38,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             self.tableview.reloadData()
             
         })
-        deleteAction.image = UIImage(named: "tick")
+        
+        //deleteAction.image = UIImage(named: "tick")
         deleteAction.backgroundColor = .red
         
         
@@ -49,8 +50,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         if self.getSectionFromSegmtd() != .Done {
             let nextAction = UIContextualAction(style: .normal, title: "NEXT", handler: {(ac: UIContextualAction, view: UIView, success: (Bool) -> Void) in
-                
-                
                 
                 let index = self.getRealIndexwithIndexRow(idx: indexPath.row)
                 
@@ -69,7 +68,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 self.tableview.reloadData()
                 
             })
-            nextAction.image = UIImage(named: "tick")
+            
+            //nextAction.image = UIImage(named: "tick")
             nextAction.backgroundColor = .purple
             
             
@@ -85,11 +85,19 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             let showingTasksTid = self.showingTasks[idx].tid
             return task.tid == showingTasksTid
         })
+        
         return index!
     }
 
     override func viewDidLoad() {
+        
         super.viewDidLoad()
+        
+        
+        let statusBarView = UIView(frame: UIApplication.shared.statusBarFrame)
+        let statusBarColor = UIColor(red: 249/255, green: 249/255, blue: 249/255, alpha: 1.0)
+        statusBarView.backgroundColor = statusBarColor
+        view.addSubview(statusBarView)
         
         self.tableview.delegate = self
         self.tableview.dataSource = self
@@ -97,8 +105,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         makeShowingTasks(sec: .ToDo)
         
     }
-
+    
     @IBAction func onClickNewToDo(_ sender: Any) {
+        
         let alert = UIAlertController(title: "Scrum Board", message: "write a new todo below.", preferredStyle: .alert)
         
         alert.addTextField()
@@ -108,19 +117,31 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] (_) in
             let textFld = alert?.textFields![0]
-            self.tasks.append(Task(title: (textFld?.text!)!, section: .ToDo))
-            for x in self.tasks {
-                print(x.tid!)
+            
+            
+            if (textFld?.text!)!.isEmpty{
+                let emptyAlert = UIAlertController(title: "Scrum Board", message: "Please write at least one letter.", preferredStyle: .alert)
+                let defaultAction = UIAlertAction(title: "OK, Sorry", style: .default, handler: nil)
+                emptyAlert.addAction(defaultAction)
+                self.present(emptyAlert, animated: true, completion: nil)
             }
-            print("-----")
-            self.makeShowingTasks(sec: self.getSectionFromSegmtd())
-            self.tableview.reloadData()
+            else {
+                self.tasks.append(Task(title: (textFld?.text!)!, section: .ToDo))
+                for x in self.tasks {
+                    print(x.tid!)
+                }
+                print("-----")
+                self.makeShowingTasks(sec: self.getSectionFromSegmtd())
+                self.tableview.reloadData()
+            }
+            
         }))
         
         self.present(alert, animated: true, completion: nil)
     }
     
     func getSectionFromSegmtd() -> Section{
+        
         var section: Section?
         switch segmtd.selectedSegmentIndex {
         case 0:
