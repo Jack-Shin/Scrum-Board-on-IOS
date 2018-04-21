@@ -13,7 +13,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     @IBOutlet weak var segmtd: UISegmentedControl!
     
-    var tasks: [Task] = [Task(title: "ABC", section: .InProgress), Task(title: "DEF", section: .Done)]
+    var tasks: [Task] = []
     var showingTasks: [Task] = []
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -26,6 +26,66 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         cell?.textLabel?.text = self.showingTasks[indexPath.row].title
         
         return cell!
+    }
+    
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        let deleteAction = UIContextualAction(style: .normal, title: "DELETE", handler: {(ac: UIContextualAction, view: UIView, success: (Bool) -> Void) in
+            
+            let index = self.getRealIndexwithIndexRow(idx: indexPath.row)
+            self.tasks.remove(at: index)
+            self.makeShowingTasks(sec: self.getSectionFromSegmtd())
+            self.tableview.reloadData()
+            
+        })
+        deleteAction.image = UIImage(named: "tick")
+        deleteAction.backgroundColor = .red
+        
+        
+        return UISwipeActionsConfiguration(actions: [deleteAction])
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        if self.getSectionFromSegmtd() != .Done {
+            let nextAction = UIContextualAction(style: .normal, title: "NEXT", handler: {(ac: UIContextualAction, view: UIView, success: (Bool) -> Void) in
+                
+                
+                
+                let index = self.getRealIndexwithIndexRow(idx: indexPath.row)
+                
+                switch self.getSectionFromSegmtd() {
+                case .ToDo:
+                    self.tasks[index].section = .InProgress
+                    break
+                case .InProgress:
+                    self.tasks[index].section = .Done
+                    break
+                default:
+                    break
+                    
+                }
+                self.makeShowingTasks(sec: self.getSectionFromSegmtd())
+                self.tableview.reloadData()
+                
+            })
+            nextAction.image = UIImage(named: "tick")
+            nextAction.backgroundColor = .purple
+            
+            
+            return UISwipeActionsConfiguration(actions: [nextAction])
+        }
+        
+        return UISwipeActionsConfiguration(actions: [])
+        
+    }
+    
+    func getRealIndexwithIndexRow(idx: Int) -> Int {
+        let index = self.tasks.index(where: {(task) -> Bool in
+            let showingTasksTid = self.showingTasks[idx].tid
+            return task.tid == showingTasksTid
+        })
+        return index!
     }
 
     override func viewDidLoad() {
@@ -49,7 +109,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak alert] (_) in
             let textFld = alert?.textFields![0]
             self.tasks.append(Task(title: (textFld?.text!)!, section: .ToDo))
-            print(self.tasks)
+            for x in self.tasks {
+                print(x.tid!)
+            }
+            print("-----")
             self.makeShowingTasks(sec: self.getSectionFromSegmtd())
             self.tableview.reloadData()
         }))
@@ -116,12 +179,16 @@ enum Section {
     case Done
 }
 
+var lastId: Int = 0
 class Task {
     var title: String?
     var section: Section?
+    var tid: String?
     
     init(title: String, section: Section) {
         self.title = title
         self.section = section
+        self.tid = "TID-" + String(lastId + 1) + "-SCRUM" // => TID-212-SCRUM
+        lastId = lastId + 1
     }
 }
