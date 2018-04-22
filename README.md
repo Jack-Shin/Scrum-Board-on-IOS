@@ -38,6 +38,9 @@
     
     this part is constantly modified.
     
+## How to keep in touch
+    hw@yunbin.kr
+    
 ## License
     MIT License
 
