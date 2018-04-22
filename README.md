@@ -20,8 +20,8 @@
 ![SAMPLE IMAGE](/img/section.gif)
 ![SAMPLE IMAGE](/img/add.gif)  
 
-    touch a right-up-side +(Add new task) button to add a new task in ToDo section.  
     touch a segmented control to see tasks in section you just selected.  
+    touch a right-up-side "+"(Add new task) button to add a new task in ToDo section.  
 ![SAMPLE IMAGE](/img/next.gif)
 ![SAMPLE IMAGE](/img/delete.gif)  
 
